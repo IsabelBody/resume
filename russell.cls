@@ -400,7 +400,7 @@
 %% Define helper macros a user can change easily
 % Header
 \newcommand{\acvHeaderNameDelim}{\space}
-\newcommand{\acvHeaderAfterNameSkip}{-.4mm}
+\newcommand{\acvHeaderAfterNameSkip}{2mm}
 \newcommand{\acvHeaderAfterPositionSkip}{.4mm}
 \newcommand{\acvHeaderAfterAddressSkip}{-.5mm}
 \newcommand{\acvHeaderIconSep}{\space}
@@ -683,13 +683,13 @@
 % Define an entry of cv information : Experience
 % Usage: \cventry{<position>}{<date>}{<description>}
 \newcommand*{\cventrynew}[3]{%
-  \vspace{-1.0mm}
+  \vspace{-3.0mm}
   \setlength\tabcolsep{0pt}
   \setlength{\extrarowheight}{0pt}
   \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} L{\textwidth - 5.0cm} R{5.0cm}}
     \ifempty{#1#2}
       {\entrydatestyle{#2} \\}
-      {\entrytitlestyle{#1} & \entrydatestyle{#2} \\}
+      {\entrytitlestyle{#1} & \entrydatestyle{#2} \\[0.5em]}
     \multicolumn{2}{L{\textwidth}}{\descriptionstyle{#3}}
   \end{tabular*}%
 }
@@ -779,8 +779,21 @@
 }{%
   \end{itemize}
   \end{justify}
-  \vspace{-3.5mm} %Spacing after each projects and exp.
+  \vspace{1mm} %Spacing after each projects and exp.
 }
+
+% Commands for template-style resume items (for simpler project formatting)
+\newcommand{\resumeItem}[2]{%
+  \item{%
+    \descriptionstyle{\textbf{#1}: }%
+    \descriptionstyle{#2 \vspace{-2pt}}%
+  }%
+}
+
+\newcommand{\resumeSubItem}[2]{\resumeItem{#1}{#2}\vspace{-4pt}}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=*]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
 
 
 %-------------------------------------------------------------------------------

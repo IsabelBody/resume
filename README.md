@@ -2,12 +2,14 @@
 
 **[View Resume PDF →](IsabelBodyResume.pdf)**
 
+A single-page, one-column resume for data scientists. It uses base LaTeX templates and custom Roboto fonts to provide ease of use and installation when trying to update the resume. The different sections are clearly documented and custom commands are used to provide consistent formatting. The main sections in the resume are summary, experience, education, achievements, skills, and projects.
+
 ---
 
 <details>
 <summary>Repository Information</summary>
 
-This repository contains my LaTeX resume using the Russell CV class.
+This repository contains my LaTeX resume.
 
 ## Setup
 
@@ -62,7 +64,6 @@ python compile_resume.py --clean
 ```
 .
 ├── resume.tex          # Main LaTeX file
-├── russell.cls         # Custom CV class
 ├── profile.png         # Profile photo
 ├── cv/                 # Section files
 │   ├── summary.tex
@@ -112,7 +113,7 @@ python compile_resume.py --clean
 
 If you prefer online editing:
 1. Go to https://www.overleaf.com
-2. Upload all files (resume.tex, russell.cls, cv/, fonts/, profile.png)
+2. Upload all files (resume.tex, cv/, fonts/, profile.png)
 3. Set compiler to XeLaTeX (Menu → Compiler)
 4. Compile and edit online
 
