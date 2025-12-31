@@ -1,0 +1,6 @@
+# No Python dependencies required for LaTeX compilation
+# This file is here for consistency with Python project structure
+# 
+# Note: LaTeX must be installed separately:
+# - Windows: Install MiKTeX (https://miktex.org/download) or TeX Live
+# - This resume requires XeLaTeX (included in both distributions)
