@@ -62,13 +62,48 @@ def check_latex_installed():
     
     return False
 
-def compile_resume():
+def clean_aux_files_before_compile(output_name='IsabelBodyResume'):
+    """Clean up auxiliary LaTeX files before compilation to force fresh build."""
+    aux_extensions = ['.aux', '.log', '.out', '.fdb_latexmk', '.fls', '.synctex.gz']
+    cleaned = []
+    
+    # Clean files with the output name prefix
+    for ext in aux_extensions:
+        file_path = Path(f'{output_name}{ext}')
+        if file_path.exists():
+            try:
+                file_path.unlink()
+                cleaned.append(file_path.name)
+            except Exception:
+                pass
+    
+    # Also clean generic auxiliary files
+    for ext in aux_extensions:
+        for file in Path('.').glob(f'*{ext}'):
+            try:
+                if file.name.startswith(output_name):
+                    continue  # Already cleaned above
+                file.unlink()
+                cleaned.append(file.name)
+            except Exception:
+                pass
+    
+    if cleaned:
+        print(f"[INFO] Cleaned {len(cleaned)} auxiliary file(s) to force fresh compilation")
+
+def compile_resume(force_clean=False):
     """Compile the resume.tex file to PDF."""
     resume_file = Path('resume.tex')
     
     if not resume_file.exists():
         print(f"[ERROR] {resume_file} not found!")
         return False
+    
+    # Check if class file exists locally
+    class_file = Path('resume.cls')
+    if not class_file.exists():
+        print(f"[WARNING] {class_file} not found in current directory!")
+        print("  LaTeX will search system directories, which may use cached versions.")
     
     print(f"Compiling {resume_file}...")
     
@@ -82,8 +117,13 @@ def compile_resume():
         print("\nAlternatively, you can use Overleaf online at: https://www.overleaf.com")
         return False
     
-    # Compile with XeLaTeX (typically requires 2 passes for references)
     output_name = 'IsabelBodyResume'
+    
+    # Clean auxiliary files before compilation if requested or if force_clean
+    if force_clean:
+        clean_aux_files_before_compile(output_name)
+    
+    # Compile with XeLaTeX (typically requires 2 passes for references)
     try:
         print("\nRunning XeLaTeX (first pass)...")
         result1 = subprocess.run(
@@ -93,7 +133,27 @@ def compile_resume():
             timeout=60
         )
         
-        if result1.returncode != 0:
+        # Check log for critical errors
+        log_file = Path(f'{output_name}.log')
+        has_critical_errors = False
+        if log_file.exists():
+            log_content = log_file.read_text(encoding='utf-8', errors='ignore')
+            # Check for "No pages of output" which indicates compilation failed
+            if "No pages of output" in log_content:
+                has_critical_errors = True
+                print("[ERROR] First pass failed - no pages were generated")
+                # Extract relevant error lines
+                lines = log_content.split('\n')
+                error_lines = [line for line in lines if '!' in line or 'Error' in line or 'Fatal' in line]
+                if error_lines:
+                    print("\nKey errors from log:")
+                    for err_line in error_lines[-10:]:  # Last 10 error lines
+                        print(f"  {err_line[:100]}")
+        
+        if result1.returncode != 0 and has_critical_errors:
+            print("\n[ERROR] First compilation pass failed with critical errors!")
+            return False
+        elif result1.returncode != 0:
             print("[WARNING] First compilation pass had warnings/errors")
             print("Attempting second pass anyway...")
         else:
@@ -107,17 +167,33 @@ def compile_resume():
             timeout=60
         )
         
-        # Check if PDF was actually created (MiKTeX sometimes returns non-zero for warnings)
+        # Check log again after second pass
+        has_critical_errors = False
+        if log_file.exists():
+            log_content = log_file.read_text(encoding='utf-8', errors='ignore')
+            if "No pages of output" in log_content:
+                has_critical_errors = True
+        
+        # Check if PDF was actually created
         pdf_file = Path(f'{output_name}.pdf')
-        if pdf_file.exists():
+        if pdf_file.exists() and not has_critical_errors:
             print("\n[SUCCESS] Resume compiled successfully!")
             print(f"Output: {pdf_file}")
+            # Show PDF modification time
+            mtime = pdf_file.stat().st_mtime
+            from datetime import datetime
+            print(f"PDF last modified: {datetime.fromtimestamp(mtime).strftime('%Y-%m-%d %H:%M:%S')}")
             return True
         else:
-            print("\n[ERROR] Compilation failed. PDF was not created.")
-            if result2.stderr:
-                print("\nErrors:")
-                print(result2.stderr[-500:])  # Last 500 chars
+            print("\n[ERROR] Compilation failed. PDF was not created or contains errors.")
+            if log_file.exists():
+                log_content = log_file.read_text(encoding='utf-8', errors='ignore')
+                lines = log_content.split('\n')
+                error_lines = [line for line in lines if '!' in line or 'Error' in line or 'Fatal' in line]
+                if error_lines:
+                    print("\nKey errors from log:")
+                    for err_line in error_lines[-15:]:  # Last 15 error lines
+                        print(f"  {err_line[:120]}")
             return False
             
     except subprocess.TimeoutExpired:
@@ -148,9 +224,10 @@ if __name__ == '__main__':
     
     parser = argparse.ArgumentParser(description='Compile LaTeX resume to PDF')
     parser.add_argument('--clean', action='store_true', help='Clean auxiliary files after compilation')
+    parser.add_argument('--force-clean', action='store_true', help='Clean auxiliary files before compilation (recommended when class file changes)')
     args = parser.parse_args()
     
-    success = compile_resume()
+    success = compile_resume(force_clean=args.force_clean)
     
     if args.clean and success:
         clean_aux_files()

@@ -683,10 +683,10 @@
 % Define an entry of cv information : Experience
 % Usage: \cventry{<position>}{<date>}{<description>}
 \newcommand*{\cventrynew}[3]{%
-  \vspace{-3.0mm}
+  \vspace{-4.5mm}
   \setlength\tabcolsep{0pt}
   \setlength{\extrarowheight}{0pt}
-  \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} L{\textwidth - 5.0cm} R{5.0cm}}
+  \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} L{\textwidth - 6.5cm} R{6.5cm}}
     \ifempty{#1#2}
       {\entrydatestyle{#2} \\}
       {\entrytitlestyle{#1} & \entrydatestyle{#2} \\[0.5em]}
@@ -779,7 +779,7 @@
 }{%
   \end{itemize}
   \end{justify}
-  \vspace{1mm} %Spacing after each projects and exp.
+  \vspace{-0.5mm} %Spacing after each projects and exp.
 }
 
 % Commands for template-style resume items (for simpler project formatting)
