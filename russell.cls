@@ -773,7 +773,7 @@
 \newenvironment{cvitems}{%
   \vspace{-3.0mm} %Spacing after title and above each projects and exp. description
   \begin{justify}
-  \begin{itemize}[leftmargin=2ex, nosep, noitemsep]
+  \begin{itemize}[leftmargin=7ex, nosep, noitemsep]
     \setlength{\parskip}{1pt} % space inbetween each lines
     \renewcommand{\labelitemi}{\bullet}
 }{%
