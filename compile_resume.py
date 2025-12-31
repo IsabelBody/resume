@@ -83,10 +83,11 @@ def compile_resume():
         return False
     
     # Compile with XeLaTeX (typically requires 2 passes for references)
+    output_name = 'IsabelBodyResume'
     try:
         print("\nRunning XeLaTeX (first pass)...")
         result1 = subprocess.run(
-            ['xelatex', '-interaction=nonstopmode', '-output-directory=.', str(resume_file)],
+            ['xelatex', '-interaction=nonstopmode', '-output-directory=.', f'-jobname={output_name}', str(resume_file)],
             capture_output=True,
             text=True,
             timeout=60
@@ -100,14 +101,14 @@ def compile_resume():
         
         print("\nRunning XeLaTeX (second pass for references)...")
         result2 = subprocess.run(
-            ['xelatex', '-interaction=nonstopmode', '-output-directory=.', str(resume_file)],
+            ['xelatex', '-interaction=nonstopmode', '-output-directory=.', f'-jobname={output_name}', str(resume_file)],
             capture_output=True,
             text=True,
             timeout=60
         )
         
         # Check if PDF was actually created (MiKTeX sometimes returns non-zero for warnings)
-        pdf_file = resume_file.with_suffix('.pdf')
+        pdf_file = Path(f'{output_name}.pdf')
         if pdf_file.exists():
             print("\n[SUCCESS] Resume compiled successfully!")
             print(f"Output: {pdf_file}")

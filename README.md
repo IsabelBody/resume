@@ -1,4 +1,11 @@
-# Resume - LaTeX CV
+# Resume
+
+**[View Resume PDF →](IsabelBodyResume.pdf)**
+
+---
+
+<details>
+<summary>Repository Information</summary>
 
 This repository contains my LaTeX resume using the Russell CV class.
 
@@ -108,3 +115,5 @@ If you prefer online editing:
 2. Upload all files (resume.tex, russell.cls, cv/, fonts/, profile.png)
 3. Set compiler to XeLaTeX (Menu → Compiler)
 4. Compile and edit online
+
+</details>
