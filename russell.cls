@@ -736,7 +736,7 @@
   \vspace{-2mm}
     \setlength\tabcolsep{0pt}
     \setlength{\extrarowheight}{0pt}
-    \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} L{16.5cm} C{3cm} R{2.5cm}}
+    \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} L{\textwidth - 4.5cm} R{4.5cm}}
 }{%
     \end{tabular*}
 }
@@ -748,7 +748,7 @@
 % }
 
 \newcommand*{\cvhonor}[2]{%
-  \honortitlestyle{#1} &  \honordatestyle{#2} \\
+  \honortitlestyle{#1} & \honordatestyle{#2} \\
 }
 
 % Define an environment for cvskill
