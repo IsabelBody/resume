@@ -686,10 +686,10 @@
   \vspace{-1.0mm}
   \setlength\tabcolsep{0pt}
   \setlength{\extrarowheight}{0pt}
-  \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} L{\textwidth - 4.5cm} R{4.5cm}}
+  \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} L{\textwidth - 5.0cm} R{5.0cm}}
     \ifempty{#1#2}
       {\entrydatestyle{#2} \\}
-      {\entrytitlestyle{#1} & \entrylocationstyle{#2} \\}
+      {\entrytitlestyle{#1} & \entrydatestyle{#2} \\}
     \multicolumn{2}{L{\textwidth}}{\descriptionstyle{#3}}
   \end{tabular*}%
 }
