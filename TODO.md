@@ -3,7 +3,8 @@
 ## Code Cleanup
 - [ ] Clean up commented-out code in experience.tex (NICE Lab, NLCIL sections)
 - [ ] Review and clean up commented-out projects in projects.tex
-- [ ] Clean up commented code in russell.cls (lines 7-12, 65, 154-158, etc.)
+- [ ] Clean up commented code in resume.cls (lines 7-12, 65, 154-158, etc.)
+- [ ] consider replacing achievements with certificates or fixing the formatting of achievements?  
 
 ## Consistency Improvements
 - [ ] Standardize date format - some entries use Current, others use Present (pick one consistently)
