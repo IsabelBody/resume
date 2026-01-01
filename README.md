@@ -1,6 +1,8 @@
 # Isabel Body - Resume
 
-> **[Download Resume PDF](IsabelBodyResume.pdf)** | **[View Preview](IsabelBodyResume.jpg)**
+![Resume Preview](IsabelBodyResume.jpg)
+
+> **[Download Resume PDF](IsabelBodyResume.pdf)**
 
 ---
 
@@ -8,7 +10,7 @@
 
 The compiled resume PDF is available directly in this repository:
 - **[IsabelBodyResume.pdf](IsabelBodyResume.pdf)** - Full resume in PDF format
-- **[IsabelBodyResume.jpg](IsabelBodyResume.jpg)** - Preview image (automatically generated during compilation)
+- **IsabelBodyResume.jpg** - Preview image (automatically generated during compilation)
 
 ## About This Resume
 

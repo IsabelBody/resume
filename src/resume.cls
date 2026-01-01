@@ -747,7 +747,7 @@
   \begin{center}
     \setlength\tabcolsep{1ex}
     \setlength{\extrarowheight}{0pt}
-    \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} l L{\textwidth * \real{0.9}}}
+    \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} l >{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}p{\dimexpr\textwidth-4.5cm-2\tabcolsep\relax}}
 }{%
     \end{tabular*}
   \end{center}
