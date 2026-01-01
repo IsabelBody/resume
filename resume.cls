@@ -143,7 +143,6 @@
 %                Configuration for fonts
 %-------------------------------------------------------------------------------
 \usepackage{newtxtext} % Times Roman font
-\usepackage{xcolor}
 \newcommand*{\bodyfont}{\rmfamily} % Times Roman
 
 % Define bodyfont command
@@ -782,7 +781,7 @@
 
 \newcommand{\resumeSubItem}[2]{\resumeItem{#1}{#2}\vspace{-4pt}}
 
-\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=*]}
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=*, topsep=0pt, partopsep=0pt]}
 \newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
 
 

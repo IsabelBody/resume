@@ -3,6 +3,7 @@
 
 # Recommended: Self-contained, no external dependencies needed
 PyMuPDF>=1.23.0
+Pillow>=10.0.0  # Required for JPG conversion with PyMuPDF
 
 # Alternative: Requires poppler-utils to be installed separately
 # pdf2image>=1.16.0

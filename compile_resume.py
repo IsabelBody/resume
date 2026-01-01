@@ -6,13 +6,16 @@ Compiles resume.tex to PDF using XeLaTeX (required for this resume class).
 
 import subprocess
 import sys
+import os
+import platform
 from pathlib import Path
 from datetime import datetime
 
+# Default output name for compiled resume
+DEFAULT_OUTPUT_NAME = 'IsabelBodyResume'
+
 def check_latex_installed():
     """Check if XeLaTeX is installed."""
-    import os
-    import platform
     
     # First try the command directly (if in PATH)
     try:
@@ -63,34 +66,52 @@ def check_latex_installed():
     
     return False
 
-def clean_aux_files_before_compile(output_name='IsabelBodyResume'):
-    """Clean up auxiliary LaTeX files before compilation to force fresh build."""
+def clean_aux_files(output_name=DEFAULT_OUTPUT_NAME, before_compile=False):
+    """Clean up auxiliary LaTeX files.
+    
+    Args:
+        output_name: Base name for output files (default: 'IsabelBodyResume')
+        before_compile: If True, clean files with output_name prefix first, then all other aux files (for fresh build)
+    """
     aux_extensions = ['.aux', '.log', '.out', '.fdb_latexmk', '.fls', '.synctex.gz']
     cleaned = []
     
-    # Clean files with the output name prefix
-    for ext in aux_extensions:
-        file_path = Path(f'{output_name}{ext}')
-        if file_path.exists():
-            try:
-                file_path.unlink()
-                cleaned.append(file_path.name)
-            except Exception:
-                pass
-    
-    # Also clean generic auxiliary files
-    for ext in aux_extensions:
-        for file in Path('.').glob(f'*{ext}'):
-            try:
-                if file.name.startswith(output_name):
-                    continue  # Already cleaned above
-                file.unlink()
-                cleaned.append(file.name)
-            except Exception:
-                pass
-    
-    if cleaned:
-        print(f"[INFO] Cleaned {len(cleaned)} auxiliary file(s) to force fresh compilation")
+    if before_compile:
+        # Clean files with the output name prefix first
+        for ext in aux_extensions:
+            file_path = Path(f'{output_name}{ext}')
+            if file_path.exists():
+                try:
+                    file_path.unlink()
+                    cleaned.append(file_path.name)
+                except Exception:
+                    pass
+        
+        # Also clean generic auxiliary files (but skip ones already cleaned)
+        for ext in aux_extensions:
+            for file in Path('.').glob(f'*{ext}'):
+                try:
+                    if file.name.startswith(output_name):
+                        continue  # Already cleaned above
+                    file.unlink()
+                    cleaned.append(file.name)
+                except Exception:
+                    pass
+        
+        if cleaned:
+            print(f"[INFO] Cleaned {len(cleaned)} auxiliary file(s) to force fresh compilation")
+    else:
+        # Clean all auxiliary files
+        for ext in aux_extensions:
+            for file in Path('.').glob(f'*{ext}'):
+                try:
+                    file.unlink()
+                    cleaned.append(file.name)
+                except Exception:
+                    pass
+        
+        if cleaned:
+            print(f"Cleaned up auxiliary files: {', '.join(cleaned)}")
 
 def compile_resume(force_clean=False):
     """Compile the resume.tex file to PDF."""
@@ -118,11 +139,11 @@ def compile_resume(force_clean=False):
         print("\nAlternatively, you can use Overleaf online at: https://www.overleaf.com")
         return False
     
-    output_name = 'IsabelBodyResume'
+    output_name = DEFAULT_OUTPUT_NAME
     
     # Clean auxiliary files before compilation if requested or if force_clean
     if force_clean:
-        clean_aux_files_before_compile(output_name)
+        clean_aux_files(output_name, before_compile=True)
     
     # Compile with XeLaTeX (typically requires 2 passes for references)
     try:
@@ -246,6 +267,13 @@ def convert_pdf_to_jpg(pdf_path, jpg_path, dpi=150):
     # Try PyMuPDF (fitz)
     try:
         import fitz  # PyMuPDF
+        try:
+            from PIL import Image
+        except ImportError:
+            print(f"[ERROR] PyMuPDF requires Pillow (PIL) for JPG conversion")
+            print(f"  Install with: pip install Pillow")
+            raise ImportError("Pillow not installed")
+        
         print(f"Converting PDF to JPG using PyMuPDF...")
         doc = fitz.open(pdf_path)
         if len(doc) > 0:
@@ -255,14 +283,13 @@ def convert_pdf_to_jpg(pdf_path, jpg_path, dpi=150):
             mat = fitz.Matrix(zoom, zoom)
             pix = page.get_pixmap(matrix=mat)
             # Convert to PIL Image and save as JPEG
-            from PIL import Image
             img = Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
             img.save(jpg_path, 'JPEG', quality=95)
             doc.close()
             print(f"[OK] JPG generated: {jpg_path}")
             return True
     except ImportError:
-        pass
+        pass  # PyMuPDF or Pillow not installed, try next method
     except Exception as e:
         print(f"[WARNING] PyMuPDF conversion failed: {e}")
     
@@ -289,21 +316,6 @@ def convert_pdf_to_jpg(pdf_path, jpg_path, dpi=150):
     print("  - ImageMagick: https://imagemagick.org/script/download.php")
     return False
 
-def clean_aux_files():
-    """Clean up auxiliary LaTeX files."""
-    aux_extensions = ['.aux', '.log', '.out', '.fdb_latexmk', '.fls', '.synctex.gz']
-    cleaned = []
-    
-    for ext in aux_extensions:
-        for file in Path('.').glob(f'*{ext}'):
-            try:
-                file.unlink()
-                cleaned.append(file.name)
-            except Exception:
-                pass
-    
-    if cleaned:
-        print(f"Cleaned up auxiliary files: {', '.join(cleaned)}")
 
 if __name__ == '__main__':
     import argparse
@@ -316,6 +328,6 @@ if __name__ == '__main__':
     success = compile_resume(force_clean=args.force_clean)
     
     if args.clean and success:
-        clean_aux_files()
+        clean_aux_files(output_name)
     
     sys.exit(0 if success else 1)
