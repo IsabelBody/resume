@@ -32,9 +32,10 @@ __pycache__/
 .DS_Store
 Thumbs.db
 
-# Keep source files
+# Keep source files and outputs
 !*.tex
 !*.cls
 !*.png
 !*.jpg
 !*.jpeg
+!*.pdf

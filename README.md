@@ -1,66 +1,30 @@
-# Resume
+# Isabel Body - Resume
 
-![Resume Preview](IsabelBodyResume.jpg)
+> **📄 [Download Resume PDF](IsabelBodyResume.pdf)** | **👁️ [View Preview](IsabelBodyResume.jpg)**
 
-**[View Resume PDF →](IsabelBodyResume.pdf)**
+---
 
-A single-page, one-column LaTeX resume template with custom Roboto fonts. Sections are modularized for easy editing.
+## Quick Access
 
-## Quick Start
+The resume PDF is available directly in this repository:
+- **[IsabelBodyResume.pdf](IsabelBodyResume.pdf)** - Full resume in PDF format
 
-### Install LaTeX
+## About
 
-This resume requires **XeLaTeX**. Install one of:
+This resume is built with LaTeX for a clean, professional presentation. The modular structure allows for easy maintenance and updates across different sections.
 
-- **MiKTeX** (Windows): https://miktex.org/download
-- **TeX Live** (All platforms): https://www.tug.org/texlive/
+### Structure
 
-### Compile
+- `resume.tex` - Main LaTeX document
+- `cv/` - Modular content sections (experience, education, skills, projects, etc.)
+- `resume.cls` - Custom LaTeX class file
+- `compile_resume.py` - Python script for automated compilation
 
+### Compilation
+
+To compile the resume, run:
 ```bash
 python compile_resume.py
 ```
 
-Or manually:
-```bash
-xelatex resume.tex
-xelatex resume.tex  # Run twice for references
-```
-
-## File Structure
-
-```
-.
-├── resume.tex          # Main LaTeX file
-├── resume.cls          # Resume class file
-├── cv/                 # Section files
-│   ├── summary.tex
-│   ├── experience.tex
-│   ├── education.tex
-│   ├── achievements.tex
-│   ├── skills.tex
-│   ├── projects.tex
-│   ├── Certifications.tex
-│   ├── languages.tex
-│   └── fonts/         # Custom Roboto fonts
-├── compile_resume.py  # Compilation script
-└── README.md
-```
-
-## Editing
-
-- **Main file**: `resume.tex` - Personal info and section order
-- **Sections**: Edit files in `cv/` directory
-- **Compile**: Run `python compile_resume.py` after changes
-
-## Troubleshooting
-
-**XeLaTeX not found:**
-- Ensure LaTeX is installed and in PATH
-- Restart terminal after installation
-
-**Compilation errors:**
-- Check `.log` file for details
-- Verify all `\input{}` files exist
-
-**Alternative:** Use [Overleaf](https://www.overleaf.com) - upload all files and set compiler to XeLaTeX
+Requires XeLaTeX (MiKTeX or TeX Live) for proper font rendering.
