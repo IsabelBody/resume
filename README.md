@@ -40,7 +40,7 @@ xelatex resume.tex  # Run twice for references
 │   ├── achievements.tex
 │   ├── skills.tex
 │   ├── projects.tex
-│   ├── certificates.tex
+│   ├── Certifications.tex
 │   ├── languages.tex
 │   └── fonts/         # Custom Roboto fonts
 ├── compile_resume.py  # Compilation script

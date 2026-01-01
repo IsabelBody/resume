@@ -4,7 +4,7 @@
 - [x] Clean up commented-out code in experience.tex (NICE Lab, NLCIL sections)
 - [x] Review and clean up commented-out projects in projects.tex
 - [x] Clean up commented code in resume.cls (lines 7-12, 65, 154-158, etc.)
-- [ ] Consider replacing achievements with certificates or fixing the formatting of achievements
+- [ ] Consider replacing achievements with Certifications or fixing the formatting of achievements
 
 ## Consistency Improvements
 - [x] Standardize date format - using "Present" consistently throughout
@@ -24,7 +24,5 @@
 - [ ] Consider changing "end-to-end ownership" to "end-to-end analytics ownership" for clarity in summary
 
 ## Verification
-- [ ] Verify all links in competitions section are still valid and working (Competitions.tex contains YouTube and Google Drive links)
-- [ ] Fix links slightly covering the name (layout/formatting issue in competitions section)
 - [ ] Test compilation and verify PDF output looks correct after any changes
 - [x] Add JPG preview of resume to the top of README.md
