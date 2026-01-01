@@ -3,7 +3,7 @@
 ## Code Cleanup
 - [x] Clean up commented-out code in experience.tex (NICE Lab, NLCIL sections)
 - [x] Review and clean up commented-out projects in projects.tex
-- [ ] Clean up commented code in resume.cls (lines 7-12, 65, 154-158, etc.)
+- [x] Clean up commented code in resume.cls (lines 7-12, 65, 154-158, etc.)
 - [ ] consider replacing achievements with certificates or fixing the formatting of achievements?  
 
 ## Consistency Improvements
@@ -14,19 +14,17 @@
 - [ ] Review and update summary.tex - ensure it accurately reflects current role and goals
 - [x] Add years of experience, key technical areas, and value proposition to summary section
 - [x] Review education section formatting - ensure courses are properly listed and formatted - Courses have been removed
-- [ ] Consider adding in intern experience
-- [ ] Comment out the descriptions in achievement section. 
-- [ ] add all achievements from linkedin , in. 
+- [x] Comment out the descriptions in achievement section. 
+- [x] add all achievements from linkedin , in. 
 - [x] Consider making each project a one line description
-- [ ] Fix random space before 100
+- [x] Fix random space before 100
 - [x] Consider removing courses from education
 - [ ] Get cursor to critique the resume. 
 
 ## Optional Decisions
-- [ ] Decide whether to include/exclude Competitions section (currently commented in resume.tex)
-- [ ] Check if profile.png should be added to resume (photo command exists but is commented)
 
 ## Verification
 - [ ] Verify all links in projects/competitions sections are still valid and working
 - [ ] Fix links slightly covering the name (layout/formatting issue)
 - [ ] Test compilation and verify PDF output looks correct after any changes
+- [x] Add JPG preview of resume to the top of README.md

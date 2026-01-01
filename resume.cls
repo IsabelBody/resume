@@ -4,14 +4,6 @@
 \ProvidesClass{resume}[2017/02/05 v1.6.1 Resume Curriculum Vitae Class]
 \NeedsTeXFormat{LaTeX2e}
 
-% \usepackage{uarial}
-
-
-% \input{glyphtounicode}
-
-% \pdfgentounicode=1
-
-
 %-------------------------------------------------------------------------------
 %                Class options
 %
@@ -62,7 +54,6 @@
 % Needed to use icons from font-awesome
 \RequirePackage{fontawesome5}
 \RequirePackage{roboto}
-% \RequirePackage[default,opentype]{sourcesanspro}  % Commented out - not used in current font config
 % Needed for the photo ID
 \RequirePackage[skins]{tcolorbox}
 % Needed to deal a paragraphs
@@ -151,18 +142,9 @@
 %-------------------------------------------------------------------------------
 %                Configuration for fonts
 %-------------------------------------------------------------------------------
-% \newcommand*{\headerfont}{\roboto}
-% \newcommand*{\headerfontlight}{\robotolight}
-% \newcommand*{\footerfont}{\sourcesanspro}
-% \newcommand*{\bodyfont}{\sourcesanspro}
-% \newcommand*{\bodyfontlight}{\sourcesansprolight}
-% \documentclass{article}
 \usepackage{newtxtext} % Times Roman font
 \usepackage{xcolor}
 \newcommand*{\bodyfont}{\rmfamily} % Times Roman
-
-
-% \renewcommand*{\rmdefault}{ua1} % Arial as the default font
 
 % Define bodyfont command
 

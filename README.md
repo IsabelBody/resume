@@ -1,5 +1,7 @@
 # Resume
 
+![Resume Preview](IsabelBodyResume.jpg)
+
 **[View Resume PDF →](IsabelBodyResume.pdf)**
 
 A single-page, one-column LaTeX resume template with custom Roboto fonts. Sections are modularized for easy editing.
