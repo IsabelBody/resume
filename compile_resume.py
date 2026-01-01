@@ -7,6 +7,7 @@ Compiles resume.tex to PDF using XeLaTeX (required for this resume class).
 import subprocess
 import sys
 from pathlib import Path
+from datetime import datetime
 
 def check_latex_installed():
     """Check if XeLaTeX is installed."""
@@ -181,8 +182,17 @@ def compile_resume(force_clean=False):
             print(f"Output: {pdf_file}")
             # Show PDF modification time
             mtime = pdf_file.stat().st_mtime
-            from datetime import datetime
             print(f"PDF last modified: {datetime.fromtimestamp(mtime).strftime('%Y-%m-%d %H:%M:%S')}")
+            
+            # Convert PDF to JPG
+            jpg_file = Path(f'{output_name}.jpg')
+            print(f"\nGenerating JPG preview...")
+            if convert_pdf_to_jpg(pdf_file, jpg_file):
+                jpg_mtime = jpg_file.stat().st_mtime
+                print(f"JPG last modified: {datetime.fromtimestamp(jpg_mtime).strftime('%Y-%m-%d %H:%M:%S')}")
+            else:
+                print("[WARNING] JPG generation failed, but PDF compilation succeeded")
+            
             return True
         else:
             print("\n[ERROR] Compilation failed. PDF was not created or contains errors.")
@@ -202,6 +212,82 @@ def compile_resume(force_clean=False):
     except Exception as e:
         print(f"[ERROR] Error during compilation: {e}")
         return False
+
+def convert_pdf_to_jpg(pdf_path, jpg_path, dpi=150):
+    """Convert PDF to JPG image using available tools."""
+    pdf_path = Path(pdf_path)
+    jpg_path = Path(jpg_path)
+    
+    if not pdf_path.exists():
+        print(f"[ERROR] PDF file not found: {pdf_path}")
+        return False
+    
+    # Delete existing JPG if it exists to ensure clean overwrite
+    if jpg_path.exists():
+        try:
+            jpg_path.unlink()
+        except Exception as e:
+            print(f"[WARNING] Could not delete existing JPG: {e}")
+    
+    # Try pdf2image (requires poppler)
+    try:
+        from pdf2image import convert_from_path
+        print(f"Converting PDF to JPG using pdf2image...")
+        images = convert_from_path(pdf_path, dpi=dpi)
+        if images:
+            images[0].save(jpg_path, 'JPEG', quality=95)
+            print(f"[OK] JPG generated: {jpg_path}")
+            return True
+    except ImportError:
+        pass
+    except Exception as e:
+        print(f"[WARNING] pdf2image conversion failed: {e}")
+    
+    # Try PyMuPDF (fitz)
+    try:
+        import fitz  # PyMuPDF
+        print(f"Converting PDF to JPG using PyMuPDF...")
+        doc = fitz.open(pdf_path)
+        if len(doc) > 0:
+            page = doc[0]
+            # Render page to pixmap
+            zoom = dpi / 72.0  # Convert DPI to zoom factor
+            mat = fitz.Matrix(zoom, zoom)
+            pix = page.get_pixmap(matrix=mat)
+            # Convert to PIL Image and save as JPEG
+            from PIL import Image
+            img = Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
+            img.save(jpg_path, 'JPEG', quality=95)
+            doc.close()
+            print(f"[OK] JPG generated: {jpg_path}")
+            return True
+    except ImportError:
+        pass
+    except Exception as e:
+        print(f"[WARNING] PyMuPDF conversion failed: {e}")
+    
+    # Try ImageMagick (external tool)
+    try:
+        print(f"Attempting to convert PDF to JPG using ImageMagick...")
+        result = subprocess.run(
+            ['magick', 'convert', '-density', str(dpi), str(pdf_path) + '[0]', '-quality', '95', str(jpg_path)],
+            capture_output=True,
+            text=True,
+            timeout=30
+        )
+        if result.returncode == 0 and jpg_path.exists():
+            print(f"[OK] JPG generated: {jpg_path}")
+            return True
+    except (FileNotFoundError, subprocess.TimeoutExpired):
+        pass
+    except Exception as e:
+        print(f"[WARNING] ImageMagick conversion failed: {e}")
+    
+    print("[ERROR] Could not convert PDF to JPG. Please install one of:")
+    print("  - pdf2image: pip install pdf2image (also requires poppler)")
+    print("  - PyMuPDF: pip install PyMuPDF")
+    print("  - ImageMagick: https://imagemagick.org/script/download.php")
+    return False
 
 def clean_aux_files():
     """Clean up auxiliary LaTeX files."""

@@ -1,0 +1,11 @@
+# Optional dependencies for PDF to JPG conversion
+# Install at least one of these for automatic JPG preview generation
+
+# Recommended: Self-contained, no external dependencies needed
+PyMuPDF>=1.23.0
+
+# Alternative: Requires poppler-utils to be installed separately
+# pdf2image>=1.16.0
+
+# Note: ImageMagick (magick command) must be installed separately if you want to use it
+# Download from: https://imagemagick.org/script/download.php
