@@ -76,55 +76,62 @@ def clean_aux_files(output_name=DEFAULT_OUTPUT_NAME, before_compile=False):
     aux_extensions = ['.aux', '.log', '.out', '.fdb_latexmk', '.fls', '.synctex.gz']
     cleaned = []
     
+    # Clean from root directory (where PDF is output)
+    search_dirs = [Path('.'), Path('src')]
+    
     if before_compile:
         # Clean files with the output name prefix first
-        for ext in aux_extensions:
-            file_path = Path(f'{output_name}{ext}')
-            if file_path.exists():
-                try:
-                    file_path.unlink()
-                    cleaned.append(file_path.name)
-                except Exception:
-                    pass
+        for search_dir in search_dirs:
+            for ext in aux_extensions:
+                file_path = search_dir / f'{output_name}{ext}'
+                if file_path.exists():
+                    try:
+                        file_path.unlink()
+                        cleaned.append(str(file_path))
+                    except Exception:
+                        pass
         
         # Also clean generic auxiliary files (but skip ones already cleaned)
-        for ext in aux_extensions:
-            for file in Path('.').glob(f'*{ext}'):
-                try:
-                    if file.name.startswith(output_name):
-                        continue  # Already cleaned above
-                    file.unlink()
-                    cleaned.append(file.name)
-                except Exception:
-                    pass
+        for search_dir in search_dirs:
+            for ext in aux_extensions:
+                for file in search_dir.glob(f'*{ext}'):
+                    try:
+                        if file.name.startswith(output_name):
+                            continue  # Already cleaned above
+                        file.unlink()
+                        cleaned.append(str(file))
+                    except Exception:
+                        pass
         
         if cleaned:
             print(f"[INFO] Cleaned {len(cleaned)} auxiliary file(s) to force fresh compilation")
     else:
         # Clean all auxiliary files
-        for ext in aux_extensions:
-            for file in Path('.').glob(f'*{ext}'):
-                try:
-                    file.unlink()
-                    cleaned.append(file.name)
-                except Exception:
-                    pass
+        for search_dir in search_dirs:
+            for ext in aux_extensions:
+                for file in search_dir.glob(f'*{ext}'):
+                    try:
+                        file.unlink()
+                        cleaned.append(str(file))
+                    except Exception:
+                        pass
         
         if cleaned:
             print(f"Cleaned up auxiliary files: {', '.join(cleaned)}")
 
 def compile_resume(force_clean=False):
     """Compile the resume.tex file to PDF."""
-    resume_file = Path('resume.tex')
+    src_dir = Path('src')
+    resume_file = src_dir / 'resume.tex'
     
     if not resume_file.exists():
         print(f"[ERROR] {resume_file} not found!")
         return False
     
     # Check if class file exists locally
-    class_file = Path('resume.cls')
+    class_file = src_dir / 'resume.cls'
     if not class_file.exists():
-        print(f"[WARNING] {class_file} not found in current directory!")
+        print(f"[WARNING] {class_file} not found in src directory!")
         print("  LaTeX will search system directories, which may use cached versions.")
     
     print(f"Compiling {resume_file}...")
@@ -146,10 +153,12 @@ def compile_resume(force_clean=False):
         clean_aux_files(output_name, before_compile=True)
     
     # Compile with XeLaTeX (typically requires 2 passes for references)
+    # Change to src directory for compilation, output to parent (root) directory
     try:
         print("\nRunning XeLaTeX (first pass)...")
         result1 = subprocess.run(
-            ['xelatex', '-interaction=nonstopmode', '-output-directory=.', f'-jobname={output_name}', str(resume_file)],
+            ['xelatex', '-interaction=nonstopmode', '-output-directory=..', f'-jobname={output_name}', str(resume_file.name)],
+            cwd=str(src_dir),
             capture_output=True,
             text=True,
             timeout=60
@@ -183,7 +192,8 @@ def compile_resume(force_clean=False):
         
         print("\nRunning XeLaTeX (second pass for references)...")
         result2 = subprocess.run(
-            ['xelatex', '-interaction=nonstopmode', '-output-directory=.', f'-jobname={output_name}', str(resume_file)],
+            ['xelatex', '-interaction=nonstopmode', '-output-directory=..', f'-jobname={output_name}', str(resume_file.name)],
+            cwd=str(src_dir),
             capture_output=True,
             text=True,
             timeout=60
