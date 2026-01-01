@@ -2,19 +2,13 @@
 
 ![Resume Preview](IsabelBodyResume.jpg)
 
-> **[Download Resume PDF](IsabelBodyResume.pdf)**
+**[Download Resume PDF](IsabelBodyResume.pdf)**
 
----
 
-## Quick Access
-
-The compiled resume PDF is available directly in this repository:
-- **[IsabelBodyResume.pdf](IsabelBodyResume.pdf)** - Full resume in PDF format
-- **IsabelBodyResume.jpg** - Preview image (automatically generated during compilation)
 
 ## About This Resume
 
-This is my professional resume built with LaTeX for a clean, professional presentation. The modular structure allows me to easily maintain and update different sections (experience, education, skills, projects, certifications, achievements, languages) without touching the core document structure.
+This is my professional resume built with LaTeX for a clean, professional presentation. The modular structure allows me to easily maintain and update different sections (experience, education, skills, projects, certifications, achievements) without touching the core document structure.
 
 The resume is compiled from LaTeX source files using a custom class file and outputs a polished PDF suitable for job applications and professional networking.
 
@@ -37,8 +31,7 @@ resume/
     │   ├── skills.tex             # Technical skills
     │   ├── projects.tex           # Project portfolio
     │   ├── Certifications.tex     # Professional certifications
-    │   ├── achievements.tex       # Notable achievements
-    │   └── languages.tex          # Language proficiencies
+    │   └── achievements.tex       # Notable achievements
     └── fonts/                     # Font files (Roboto family + FontAwesome)
 ```
 
