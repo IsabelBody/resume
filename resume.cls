@@ -387,11 +387,11 @@
 \newcommand{\acvHeaderAfterAddressSkip}{-.5mm}
 \newcommand{\acvHeaderIconSep}{\space}
 \newcommand{\acvHeaderSocialSep}{\quad\textbar\quad}
-\newcommand{\acvHeaderAfterSocialSkip}{6mm}
+\newcommand{\acvHeaderAfterSocialSkip}{12mm}
 \newcommand{\acvHeaderAfterQuoteSkip}{5mm}
 
 % Others
-\newcommand{\acvSectionTopSkip}{3mm}
+\newcommand{\acvSectionTopSkip}{4.5mm}
 \newcommand{\acvSectionContentTopSkip}{1.5mm}
 
 
@@ -598,6 +598,14 @@
   \sectionstyle{#1}
   \phantomsection
   \color{sectiondivider}\vhrulefill{0.5pt}
+}
+
+% Define a section for CV without horizontal line
+% Usage: \cvsectionnoline{<section-title>}
+\newcommand{\cvsectionnoline}[1]{%
+  \vspace{\acvSectionTopSkip}
+  \sectionstyle{#1}
+  \phantomsection
 }
 
 % Define a subsection for CV
